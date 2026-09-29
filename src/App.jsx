@@ -347,8 +347,14 @@ function App() {
       {/* Filtros Inteligentes */}
       <FilterBar filtroAtual={filtro} onFiltroChange={setFiltro} />
 
-      {/* Lista Renderizada */}
-      {!carregando && !erro && <NotificationList notificacoes={notificacoesVisiveis} />}
+      {/* Estados da listagem */}
+      {carregando ? (
+        <p className="text-sm text-gray-500 mt-4">Carregando notificações...</p>
+      ) : erro ? (
+        <p className="text-sm text-red-600 mt-4">{erro}</p>
+      ) : (
+        <NotificationList notificacoes={notificacoesVisiveis} />
+      )}
     </div>
   );
 }
