@@ -282,33 +282,39 @@
 //   );
 // }
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { API_URL } from "./config";
 import FilterBar from "./components/FilterBar";
 import NotificationList from "./components/NotificationList";
 import NovaNotificacaoForm from "./components/NovaNotificacaoForm";
 
-const notificacoesIniciais = [
-  {
-    id: 1,
-    canal: "PUSH",
-    hora: "14:32",
-    titulo: "Inscrição confirmada",
-    texto: "Seu lugar está garantido.",
-    lida: false,
-  },
-  {
-    id: 2,
-    canal: "EMAIL",
-    hora: "13:10",
-    titulo: "Evento amanhã",
-    texto: "Não esqueça o notebook.",
-    lida: true,
-  },
-];
-
 function App() {
   const [filtro, setFiltro] = useState("todas");
-  const [notificacoes, setNotificacoes] = useState(notificacoesIniciais);
+  const [notificacoes, setNotificacoes] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
+
+  useEffect(() => {
+    async function buscar() {
+      try {
+        const resposta = await fetch(`${API_URL}/notificacoes`);
+
+        if (!resposta.ok) {
+          throw new Error("Não foi possível carregar as notificações.");
+        }
+
+        const dados = await resposta.json();
+        setNotificacoes(dados);
+        setErro(null);
+      } catch (error) {
+        setErro(error.message || "Erro ao buscar notificações.");
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    buscar();
+  }, []);
 
   // Filtra dinamicamente sem alterar a lista original (Derivação de estado)
   const notificacoesVisiveis = notificacoes.filter((n) => {
@@ -326,15 +332,23 @@ function App() {
   return (
     <div className="max-w-2xl mx-auto p-4 min-h-screen bg-gray-50/50">
       <h1 className="text-2xl font-bold mb-4 text-gray-900">Central de Notificações</h1>
-      
+
+      {carregando && (
+        <p className="text-sm text-gray-500 mb-4">Carregando notificações...</p>
+      )}
+
+      {erro && (
+        <p className="text-sm text-red-600 mb-4">{erro}</p>
+      )}
+
       {/* Formulário de Envio */}
       <NovaNotificacaoForm onAdicionar={adicionarNotificacao} />
-      
+
       {/* Filtros Inteligentes */}
       <FilterBar filtroAtual={filtro} onFiltroChange={setFiltro} />
-      
+
       {/* Lista Renderizada */}
-      <NotificationList notificacoes={notificacoesVisiveis} />
+      {!carregando && !erro && <NotificationList notificacoes={notificacoesVisiveis} />}
     </div>
   );
 }
