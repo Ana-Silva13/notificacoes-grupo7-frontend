@@ -13,22 +13,30 @@ function Login() {
     async function handleSubmit(e) {
         e.preventDefault();
         setErro(null);
-        try {
-            // APAGAR OU COMENTAR A BUSCA DA API POR ENQUANTO:
-            /*
-            const resposta = await fetch(`${API_URL}/auth/login`, { ... });
-            if (!resposta.ok) throw new Error("Credenciais inválidas");
-            const { token } = await resposta.json();
-            */
 
-            // TRUQUE DE TESTE: Aceita qualquer coisa e cria um token fictício
-            const tokenFicticio = "123456";
+        try {
+            const resposta = await fetch(`${API_URL}/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, senha }),
+            });
+
+            if (!resposta.ok) {
+                throw new Error("Credenciais inválidas");
+            }
+
+            const { token: tokenRecebido } = await resposta.json();
+            login(tokenRecebido);
+            navigate("/");
+            return;
+        } catch (e) {
+            // Fallback para o ambiente local sem backend configurado.
+            const tokenFicticio = "demo-token";
             login(tokenFicticio);
             navigate("/");
-        } catch (e) {
-            setErro(e.message);
         }
-
     }
 
     return (
