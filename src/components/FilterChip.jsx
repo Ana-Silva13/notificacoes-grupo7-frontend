@@ -3,6 +3,7 @@
     <button
       type="button"
       onClick={onClick}
+      aria-pressed={ativo}
       className={`px-4 py-2 rounded-full text-xs font-semibold capitalize cursor-pointer transition ${
         ativo 
           ? 'bg-primary text-white' 
@@ -15,4 +16,3 @@
 }
 
 export default FilterChip;
-

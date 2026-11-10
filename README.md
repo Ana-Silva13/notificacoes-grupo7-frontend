@@ -1,19 +1,24 @@
-# React + Vite
+# Notificações Grupo 7
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend de uma aplicação de notificações com React + Vite.
 
-Currently, two official plugins are available:
+## Acessibilidade
+--------------------------------------------------------------
+Registro das notas do Lighthouse antes e depois dos ajustes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Antes:
+  - Login: 96
+  - Lista principal: 87
+- Depois:
+  - Login: 100
+  - Lista principal: 100
+--------------------------------------------------------------
+Ajustes aplicados:
+- adição de landmark `main` nas páginas principais;
+- uso de `aria-pressed` nos filtros de canal;
+- região `aria-live="polite"` para atualizar a lista de notificações;
+- `role="alert"` para mensagens de erro de login;
+- associação correta de `label` com `select` no formulário;
+- melhoria de contraste dos botões para atender acessibilidade.
 
-## React Compiler
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

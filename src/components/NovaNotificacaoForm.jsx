@@ -43,8 +43,9 @@ function NovaNotificacaoForm({ onAdicionar }) {
 
       <div className="flex gap-4 items-center justify-between">
         <div className="flex gap-2 items-center">
-          <label className="text-xs font-semibold text-gray-500">Canal:</label>
+          <label htmlFor="canal" className="text-xs font-semibold text-gray-500">Canal:</label>
           <select 
+            id="canal"
             value={canal} 
             onChange={(e) => setCanal(e.target.value)}
             className="border border-gray-200 rounded-md p-1 text-xs bg-white text-gray-700"
